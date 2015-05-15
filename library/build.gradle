@@ -1,0 +1,117 @@
+import java.text.SimpleDateFormat
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        //dagger
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.+'
+        //retroLambda
+        classpath 'me.tatarka:gradle-retrolambda:3.0.1'
+    }
+}
+
+// generates a string with the time of the build
+def buildDate() {
+
+    def df = new SimpleDateFormat("MMM-dd-yy")
+    return df.format(new Date())
+}
+
+def buildTime() {
+    def df = new SimpleDateFormat("HH")
+    return df.format(new Date())
+}
+
+//generates a version string
+def versionName(vMajor, vMinor, vIncrement, useIncrement) {
+    def sb = new StringBuilder()
+    sb.append(String.valueOf(vMajor))
+    sb.append(".")
+    sb.append(String.valueOf(vMinor))
+    if (useIncrement) {
+        sb.append(".")
+        sb.append(String.valueOf(vIncrement))
+    }
+    return sb.toString();
+}
+
+def versionName(vMajor, vMinor,vIncrement) {
+    return versionName(vMajor,vMinor,vIncrement,true)
+}
+
+def versionName(vMajor, vMinor) {
+    return versionName(vMajor,vMinor,0,false)
+}
+
+android {
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+
+        def vMajor = 0
+        def vMinor = 1
+        def vIncremental = 1
+        def vCode = 1
+
+        versionCode vCode
+        versionName versionName(vMajor, vMinor, vIncremental)
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //compile 'com.android.support:appcompat-v7:22.1.1'
+
+    // Dagger dependency injection.
+    compile 'com.squareup.dagger:dagger:1.2.+'
+    compile 'javax.inject:javax.inject:1@jar'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+    apt 'com.squareup.dagger:dagger-compiler:1.2.+'
+
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'com.mcxiaoke.volley:library:1.0.15'
+
+    //retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.+'
+
+    //reactive java library
+    //compile 'io.reactivex:rxandroid:0.23.+'
+}

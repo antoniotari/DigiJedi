@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+      <declare-styleable name="SlidingTabStrip">
+        <attr name="tabBackgroundResId" format="reference" />
+        <attr name="indicatorColor" format="color" />
+        <attr name="underlineColor" format="color" />
+        <attr name="dividerColor" format="color" />
+        <attr name="tabMinHeight" format="dimension" />
+        <attr name="minChildWidth" format="dimension" />
+        <attr name="underlineHeight" format="dimension" />
+        <attr name="indicatorHeight" format="dimension" />
+        <attr name="tabDividerWidth" format="dimension" />
+        <attr name="customDividerPadding" format="dimension" />
+        <attr name="separatorTabbing" format="dimension" />
+    </declare-styleable>
+    
+          <declare-styleable name="SmartViewPager">
+        <attr name="swipeable" format="boolean" />
+    </declare-styleable>
+      
+</resources>
