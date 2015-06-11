@@ -109,6 +109,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.mcxiaoke.volley:library:1.0.15'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
 
     //retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.+'
 

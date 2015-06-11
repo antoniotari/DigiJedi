@@ -6,6 +6,7 @@ package com.antoniotari.android.injection;
 
 import com.antoniotari.android.jedi.ATFontUtil;
 import com.antoniotari.android.jedi.ScreenDimension;
+import com.squareup.okhttp.OkHttpClient;
 
 import android.app.Application;
 import android.content.Context;
@@ -51,5 +52,10 @@ public class JediModule {
     @Provides @Singleton
     ScreenDimension provideScreenDimension(@ForApplication Context context){
         return new ScreenDimension(context);
+    }
+
+    @Provides @Singleton
+    OkHttpClient provideOkHttpClient() {
+        return new OkHttpClient();
     }
 }

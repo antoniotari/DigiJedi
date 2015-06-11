@@ -11,7 +11,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -302,10 +301,7 @@ public class JediUtil {
         });
 
         alert.setView(wv);
-        alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
+        alert.setNegativeButton(android.R.string.ok, (DialogInterface dialog, int id) -> dialog.dismiss());
         alert.show();
     }
 
@@ -432,47 +428,6 @@ public class JediUtil {
         }
         //Log.d(tags.TAG_DEBUG, "isEmulator=" + isEmulator);
         return isEmulator;
-    }
-
-    //-------------------------------------------------------------------
-    public static int OpposeColor(int ColorToInvert) {
-        int RGBMAX = 255;
-
-        float[] hsv = new float[3];
-        float H;
-        Color.RGBToHSV(RGBMAX - Color.red(ColorToInvert), RGBMAX - Color.green(ColorToInvert), RGBMAX - Color.blue(ColorToInvert), hsv);
-
-        H = (float) (hsv[0] + 0.5);
-
-        if (H > 1) {
-            H -= 1;
-        }
-
-        return Color.HSVToColor(hsv);
-    }
-
-    public static int ContrastColor(int colorToInvert) {
-        int RGBMAX = 255;
-
-        float[] hsv = new float[3];
-        float H;
-        int r = RGBMAX - Color.red(colorToInvert);
-        int g = RGBMAX - Color.green(colorToInvert);
-        int b = RGBMAX - Color.blue(colorToInvert);
-        //int maj127=(r>127?1:0)+(g>127?1:0)+(b>127?1:0);
-        if ((r + b + g) >= ((RGBMAX * 3) / 2)) {
-            Color.RGBToHSV(r < 200 ? 200 : r, g < 200 ? 200 : g, b < 200 ? 200 : b, hsv);
-        } else {
-            Color.RGBToHSV(r > 55 ? 55 : r, g > 55 ? 55 : g, b > 55 ? 55 : b, hsv);
-        }
-
-        H = (float) (hsv[0] + 0.5);
-
-        if (H > 1) {
-            H -= 1;
-        }
-
-        return Color.HSVToColor(hsv);
     }
 
     public static boolean isMainThread() {
