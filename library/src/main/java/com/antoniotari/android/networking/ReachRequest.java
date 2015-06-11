@@ -8,7 +8,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.antoniotari.android.meanutil.FileUtil;
+import com.antoniotari.android.jedi.FileUtil;
 
 import org.apache.http.HttpEntity;
 import org.json.JSONException;

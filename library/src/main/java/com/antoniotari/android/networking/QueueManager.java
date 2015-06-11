@@ -12,7 +12,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.antoniotari.android.injection.ApplicationGraph;
-import com.antoniotari.android.meanutil.Log;
+import com.antoniotari.android.jedi.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * {@link Volley} {@link RequestQueue} manager.
- *
+ * <p>
  * TODO: Antonio, please add your magic here...
  */
 public class QueueManager {
@@ -54,13 +54,14 @@ public class QueueManager {
     private RequestQueue mRequestQueue;
     private Context mContext;
     private ImageLoader mImageLoader;
+    private static final String TAG="com.antoniotari.android.networking.TAG";
 
     // injecting the contest is a safe way to pass the context to a class
-    public QueueManager(Context context){
-        mContext=context;
+    public QueueManager(Context context) {
+        mContext = context;
     }
 
-    public static QueueManager getInstance(){
+    public static QueueManager getInstance() {
         QueueManager qm = ApplicationGraph.getObjectGraph().get(QueueManager.class);
         return qm;
     }
@@ -70,54 +71,45 @@ public class QueueManager {
     public String loadFromCache(String url) {
         Cache cache = getRequestQueue().getCache();
         Cache.Entry entry = cache.get(url);
-        String data=null;
-        if(entry != null)
-        {
+        String data = null;
+        if (entry != null) {
             try {
                 data = new String(entry.data, "UTF-8");
                 // handle data, like converting it to xml, json, bitmap etc.,
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             // Cached response doesn't exists. Make network call here
         }
         return data;
     }
 
-    public JSONObject loadFromCacheJ(String url)
-    {
-        String data=loadFromCache(url);
-        JSONObject retJ=null;
-        if(data!=null)
-        {
-            try
-            {
-                retJ=new JSONObject(data);
-            }catch(JSONException d){}
+    public JSONObject loadFromCacheJ(String url) {
+        String data = loadFromCache(url);
+        JSONObject retJ = null;
+        if (data != null) {
+            try {
+                retJ = new JSONObject(data);
+            } catch (JSONException d) {
+            }
         }
         return retJ;
     }
 
-    public void invalidateCache(String url)
-    {
+    public void invalidateCache(String url) {
         getRequestQueue().getCache().invalidate(url, true);
     }
 
-    public void deleteCache(String url)
-    {
+    public void deleteCache(String url) {
         getRequestQueue().getCache().remove(url);
     }
 
-    public void deleteCache()
-    {
+    public void deleteCache() {
         getRequestQueue().getCache().clear();
     }
 
-    public <T> void turnOffCache(String url, Request<T> req)
-    {
+    public <T> void turnOffCache(String url, Request<T> req) {
         // String request
         //	StringRequest stringReq = new StringRequest(url);
         // disable cache
@@ -128,15 +120,15 @@ public class QueueManager {
     //---------------------------------------------------------
     //-----------------REQUEST
 
-    public void cancelRequests(String... tags)
-    {
-        if(tags==null)
+    public void cancelRequests(String... tags) {
+        if (tags == null) {
             return;
+        }
 
-        for(int i=0;i<tags.length;i++)
-        {
-            if(tags[i]!=null)
+        for (int i = 0; i < tags.length; i++) {
+            if (tags[i] != null) {
                 getRequestQueue().cancelAll(tags[i]);
+            }
         }
     }
 
@@ -145,10 +137,9 @@ public class QueueManager {
     //	getRequestQueue(context).cancelAll();
     //}
 
-    public RequestQueue getRequestQueue()
-    {
+    public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            mRequestQueue = newRequestQueue(mContext,null);
+            mRequestQueue = newRequestQueue(mContext, null);
         }
         return mRequestQueue;
     }
@@ -159,7 +150,8 @@ public class QueueManager {
      * Creates a default instance of the worker pool and calls {@link RequestQueue#start()} on it.
      *
      * @param context A {@link Context} to use for creating the cache dir.
-     * @param stack An {@link HttpStack} to use for the network, or null for default.
+     * @param stack   An {@link HttpStack} to use for the network, or null for default.
+     *
      * @return A started {@link RequestQueue} instance.
      */
     public static RequestQueue newRequestQueue(Context context, HttpStack stack) {
@@ -191,7 +183,6 @@ public class QueueManager {
         return queue;
     }
 
-
 //    public ImageLoader getImageLoader()
 //    {
 //        getRequestQueue();
@@ -201,22 +192,19 @@ public class QueueManager {
 //        return mImageLoader;
 //    }
 
-    public <T> void addToRequestQueue(Request<T> req, Object tag)
-    {
+    public <T> void addToRequestQueue(Request<T> req, Object tag) {
         // set the default tag if tag is empty
         //req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
         req.setTag(tag);
         getRequestQueue().add(req);
     }
 
-    public <T> void addToRequestQueue(Request<T> req)
-    {
+    public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
         getRequestQueue().add(req);
     }
 
-    public void cancelPendingRequests(Object tag)
-    {
+    public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
@@ -231,18 +219,17 @@ public class QueueManager {
 
         @Override
         public synchronized void initialize() {
-            try{
+            try {
                 super.initialize();
-            }catch(Throwable t1){
+            } catch (Throwable t1) {
                 Log.error(t1);
                 clear();
                 super.initialize();
             }
         }
-
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return mContext;
     }
 }

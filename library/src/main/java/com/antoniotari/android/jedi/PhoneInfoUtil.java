@@ -1,4 +1,4 @@
-package com.antoniotari.android.meanutil;
+package com.antoniotari.android.jedi;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -377,7 +377,7 @@ public class PhoneInfoUtil
 	//-------------------------------------------------------------------
 	public static boolean isAndroidEmulator(Context context) 
 	{
-	    return MeanUtil.isAndroidEmulator(context);
+	    return JediUtil.isAndroidEmulator(context);
 	}
 	
 	//-------------------------------------------------------------------

@@ -2,9 +2,9 @@ package com.antoniotari.android;
 
 import com.google.gson.Gson;
 
-import com.antoniotari.android.meanutil.FileUtil;
-import com.antoniotari.android.meanutil.JsonUtils;
-import com.antoniotari.android.meanutil.Log;
+import com.antoniotari.android.jedi.FileUtil;
+import com.antoniotari.android.jedi.JsonUtils;
+import com.antoniotari.android.jedi.Log;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by Antonio Tari on 15/12/14.
  */
-public abstract class MObject {
+public abstract class JediObject {
     @Override
     public String toString(){
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);

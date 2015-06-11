@@ -1,6 +1,6 @@
 package com.antoniotari.android.networking;
 
-import com.antoniotari.android.meanutil.MeanUtil;
+import com.antoniotari.android.jedi.JediUtil;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -108,7 +108,7 @@ public class HttpValues
                 try {
                     _httpValues.put(
                             status,
-                            res.getString(MeanUtil.getResourceIdFromName(context, "string", "HTTP_" + status.toString())));
+                            res.getString(JediUtil.getResourceIdFromName(context, "string", "HTTP_" + status.toString())));
                 }catch (Exception e){
                     _httpValues.put(
                             status,

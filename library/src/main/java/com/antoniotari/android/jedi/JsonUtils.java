@@ -1,4 +1,4 @@
-package com.antoniotari.android.meanutil;
+package com.antoniotari.android.jedi;
 
 import org.json.JSONArray;
 import org.json.JSONException;

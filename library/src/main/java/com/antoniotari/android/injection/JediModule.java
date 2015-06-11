@@ -26,10 +26,10 @@ import dagger.Provides;
         complete = false,
         library = true
 )
-public class MeanModule {
+public class JediModule {
     private final Context mContext;
 
-    public MeanModule(Application application) {
+    public JediModule(Application application) {
         mContext = application.getApplicationContext();
     }
 

@@ -1,4 +1,4 @@
-package com.antoniotari.android.meanutil;
+package com.antoniotari.android.jedi;
 
 import com.antoniotari.android.networking.HttpValues;
 
@@ -34,14 +34,14 @@ import java.util.Locale;
 
 import javax.security.auth.x500.X500Principal;
 
-public class MeanUtil {
-    private static MeanUtil instance = null;
+public class JediUtil {
+    private static JediUtil instance = null;
     private static String packageName;
     private static String dateFormat = "yyyy-MM-dd HH:mm:ss";
     public static final String NULL_VALUE = "__NULL__";
     public static final String EMPTY_VALUE = "__EMPTY__";
     public static String UTF8 = "UTF-8";
-    String appName = MeanUtil.class.getSimpleName();
+    String appName = JediUtil.class.getSimpleName();
     static boolean isDebug = true;
     static boolean isReleaseSigned = false;
     //boolean useExternalStorage=false;
@@ -52,7 +52,7 @@ public class MeanUtil {
 
     //-----------------------------------------------------------------------------
     //-----------------the constructor should be placed in the application onCreate
-    public MeanUtil(Context context) {
+    public JediUtil(Context context) {
         //if(!(c instanceof Application))
         //	throw new IllegalArgumentException ("please provide application context, it's a good idea to initialize ATUtil inside onCreate of the Application class");
         //if(instance == null){
@@ -97,7 +97,7 @@ public class MeanUtil {
 //	}
 
     //-----------------------------------------------------------------------------
-    public MeanUtil(Context c, String dateFormat, String appNameVar, Boolean isDebugVar) {
+    public JediUtil(Context c, String dateFormat, String appNameVar, Boolean isDebugVar) {
         this(c);
         dateFormat = dateFormat == null ? dateFormat : dateFormat;
         appName = appNameVar == null ? appName : appNameVar;
@@ -109,19 +109,19 @@ public class MeanUtil {
     //-------methods for BUILDING the object
 
     //-----------------------------------------------------------------------------
-    public MeanUtil setDateFormat(String dateFormat) {
+    public JediUtil setDateFormat(String dateFormat) {
         dateFormat = dateFormat == null ? dateFormat : dateFormat;
         return this;
     }
 
     //-----------------------------------------------------------------------------
-    public MeanUtil setAppName(String appName) {
+    public JediUtil setAppName(String appName) {
         this.appName = appName == null ? this.appName : appName;
         return this;
     }
 
     //-----------------------------------------------------------------------------
-    public MeanUtil setSendDataToServer(Boolean sendDataToServerVar) {
+    public JediUtil setSendDataToServer(Boolean sendDataToServerVar) {
         if (sendDataToServerVar != null) {
             sendDataToServer = sendDataToServerVar;
         }
@@ -129,7 +129,7 @@ public class MeanUtil {
     }
 
     //-----------------------------------------------------------------------------
-    public MeanUtil setDebug(Boolean isDebugVar) {
+    public JediUtil setDebug(Boolean isDebugVar) {
         if (isDebugVar != null) {
             isDebug = isDebugVar;
         }
@@ -137,7 +137,7 @@ public class MeanUtil {
     }
 
     //-----------------------------------------------------------------------------
-    public MeanUtil useExternalStorage(Boolean useExternalStorageVar) {
+    public JediUtil useExternalStorage(Boolean useExternalStorageVar) {
         if (useExternalStorageVar != null) {
             //useExternalStorage=useExternalStorageVar;
             FileUtil.getInstance().setUseExternalStorage(useExternalStorageVar);
@@ -147,9 +147,9 @@ public class MeanUtil {
 
     //-----------------------------------------------------------------------------
     //-----------------singleton get instance
-    public static MeanUtil getInstance(Context context) {
+    public static JediUtil getInstance(Context context) {
         if (instance == null) {
-            instance = new MeanUtil(context);
+            instance = new JediUtil(context);
         }
         return instance;
     }
@@ -317,7 +317,7 @@ public class MeanUtil {
     }
 
     public static void SimpleDialog(Context c, String message) {
-        SimpleDialog(c, message, MeanUtil.getInstance(c).getAppName());
+        SimpleDialog(c, message, JediUtil.getInstance(c).getAppName());
     }
 
     //-----------------------------------------------------------------------------

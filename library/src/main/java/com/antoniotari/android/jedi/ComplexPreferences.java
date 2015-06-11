@@ -1,4 +1,4 @@
-package com.antoniotari.android.meanutil;
+package com.antoniotari.android.jedi;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

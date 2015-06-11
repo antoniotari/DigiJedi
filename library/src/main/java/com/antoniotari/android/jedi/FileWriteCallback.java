@@ -1,4 +1,4 @@
-package com.antoniotari.android.meanutil;
+package com.antoniotari.android.jedi;
 
 public interface FileWriteCallback {
 	public void onFileWriteSuccess();

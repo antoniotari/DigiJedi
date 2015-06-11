@@ -1,7 +1,7 @@
 package com.antoniotari.android.images;
 
-import com.antoniotari.android.meanutil.FileUtil;
-import com.antoniotari.android.meanutil.Log;
+import com.antoniotari.android.jedi.FileUtil;
+import com.antoniotari.android.jedi.Log;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,19 +17,19 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class MeanImageStore
+public class JediImageStore
 {
-	private static MeanImageStore instance=null;
+	private static JediImageStore instance=null;
 
-	private MeanImageStore()
+	private JediImageStore()
 	{
 
 	}
 
-	public static MeanImageStore getInstance()
+	public static JediImageStore getInstance()
 	{
 		if(instance==null)
-			instance=new MeanImageStore();
+			instance=new JediImageStore();
 		return instance;
 	}
 
@@ -60,7 +60,7 @@ public class MeanImageStore
 	 */
 	public void StoreImage(Context context,Bitmap image,String name,int maxSize) 
 	{
-		Bitmap img= MeanImage.reduceBitmap(image, maxSize);
+		Bitmap img= JediImage.reduceBitmap(image, maxSize);
 		Log.debug("size before:" + image.getWidth() + " " + image.getHeight(), "size after:" + img.getWidth() + " " + img.getHeight());
 		StoreImage(context, img,name);
 	}
