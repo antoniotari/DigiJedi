@@ -1,5 +1,6 @@
 package com.antoniotari.android.jedi;
 
+import com.antoniotari.android.injection.ApplicationGraph;
 import com.antoniotari.android.networking.HttpValues;
 
 import android.app.Activity;
@@ -32,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
 import javax.security.auth.x500.X500Principal;
 
 public class JediUtil {
@@ -44,26 +46,19 @@ public class JediUtil {
     String appName = JediUtil.class.getSimpleName();
     static boolean isDebug = true;
     static boolean isReleaseSigned = false;
-    //boolean useExternalStorage=false;
     boolean sendDataToServer = false;
     private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
 
-    private static ScreenDimension _screen = null;
+    @Inject
+    ScreenDimension mScreenDimension;
 
     //-----------------------------------------------------------------------------
     //-----------------the constructor should be placed in the application onCreate
     public JediUtil(Context context) {
-        //if(!(c instanceof Application))
-        //	throw new IllegalArgumentException ("please provide application context, it's a good idea to initialize ATUtil inside onCreate of the Application class");
-        //if(instance == null){
-        //context=c;
+        ApplicationGraph.getObjectGraph().inject(this);
         packageName = context.getPackageName();
         isReleaseSigned = !isDebuggable(context);
         instance = this;
-
-        //initialize the screenDimension
-        _screen = new ScreenDimension(context);
-        //ScreenDimension.setMetrics(context);
 
         HttpValues.generateHttpValues(context);
 
@@ -140,7 +135,7 @@ public class JediUtil {
     public JediUtil useExternalStorage(Boolean useExternalStorageVar) {
         if (useExternalStorageVar != null) {
             //useExternalStorage=useExternalStorageVar;
-            FileUtil.getInstance().setUseExternalStorage(useExternalStorageVar);
+            FileHelper.getInstance().setUseExternalStorage(useExternalStorageVar);
         }
         return this;
     }
@@ -162,15 +157,6 @@ public class JediUtil {
 //			instance = new ATUtil();
 //		return instance;
 //	}
-
-    //-----------------------------------------------------------------------------
-    //screen dimension
-    public static ScreenDimension getScreen(Context context) {
-        if (_screen == null) {
-            _screen = new ScreenDimension(context);
-        }
-        return _screen;
-    }
 
     //-----------------------------------------------------------------------------
     //-----------------
@@ -402,12 +388,11 @@ public class JediUtil {
     /**
      * Gets a Device Type. Either Phone, Tablet or Unknown.
      *
-     * @param context               context
      * @param tablet_inch_threshold threshold for deciding if is tablet
      *
      * @return PHONE, TABLET OR UNKNOWN
      */
-    public static DeviceType getDeviceType(Context context, int tablet_inch_threshold) {
+    public DeviceType getDeviceType(int tablet_inch_threshold) {
         //if (context == null) return DeviceType.UNKNOWN;
 
         //DisplayMetrics metrics = new DisplayMetrics();
@@ -429,8 +414,7 @@ public class JediUtil {
         //		+ (heightInches * heightInches)
         //		);
 
-        ScreenDimension.setMetrics(context);
-        double diagonalInches = ScreenDimension.getDiagonalInches();
+        double diagonalInches = mScreenDimension.getDiagonalInches();
 
         if (diagonalInches > tablet_inch_threshold) {
             return DeviceType.TABLET;
@@ -441,24 +425,22 @@ public class JediUtil {
 
     /**
      *
-     * @param context
      * @return
      */
-    public static DeviceType getDeviceType(Context context) {
-        return getDeviceType(context, TABLET_INCH_THRESHOLD);
+    public DeviceType getDeviceType() {
+        return getDeviceType(TABLET_INCH_THRESHOLD);
     }
 
     /**
      *
-     * @param context
      * @return
      */
-    public static boolean isPhone(Context context) {
-        return (getDeviceType(context) == DeviceType.PHONE);
+    public boolean isPhone() {
+        return (getDeviceType() == DeviceType.PHONE);
     }
 
-    public static boolean isPhone(Context context, int tabletThreshold) {
-        return (getDeviceType(context, tabletThreshold) == DeviceType.PHONE);
+    public boolean isPhone(int tabletThreshold) {
+        return (getDeviceType(tabletThreshold) == DeviceType.PHONE);
     }
 
     //-------------------------------------------------------------------

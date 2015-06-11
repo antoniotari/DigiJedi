@@ -8,7 +8,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.antoniotari.android.jedi.FileUtil;
+import com.antoniotari.android.jedi.FileHelper;
 
 import org.apache.http.HttpEntity;
 import org.json.JSONException;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by Antonio Tari on 20/01/15.
  */
-public class ReachRequest<T> extends Request<T> {
+public class JediRequest<T> extends Request<T> {
     /** Charset for request. */
     private static final String PROTOCOL_CHARSET = "utf-8";
 
@@ -52,7 +52,7 @@ public class ReachRequest<T> extends Request<T> {
      * @param mRequestBody
      * @param classOfT
      */
-    public ReachRequest(int method, String url, Response.Listener<T> mListener, Response.ErrorListener listener, String mRequestBody,
+    public JediRequest(int method, String url, Response.Listener<T> mListener, Response.ErrorListener listener, String mRequestBody,
             Class<T> classOfT) {
         super(method, url, listener);
         this.mListener = mListener;
@@ -102,7 +102,7 @@ public class ReachRequest<T> extends Request<T> {
         }
         else {
             //then check the atutil cache
-            respCacheJ = FileUtil.getInstance().getCachedJson(QueueManager.getInstance().getContext(), super.getUrl());
+            respCacheJ = FileHelper.getInstance().getCachedJson(QueueManager.getInstance().getContext(), super.getUrl());
             if (respCacheJ != null && respCacheJ.length() > 0) {
                 try {
                     deliverCacheResponse(parseResponse(respCacheJ.toString()));
@@ -114,8 +114,8 @@ public class ReachRequest<T> extends Request<T> {
     }
 
     protected void deliverCacheResponse(T response){
-        if(mListener instanceof ReachRequestListener) {
-            ((ReachRequestListener)mListener).onCacheResponse(response);
+        if(mListener instanceof JediRequestListener) {
+            ((JediRequestListener)mListener).onCacheResponse(response);
         }
     }
 
@@ -140,7 +140,7 @@ public class ReachRequest<T> extends Request<T> {
 
     private void saveHardCache(String jsonString){
         try {
-            FileUtil.getInstance().returnOrUpdateCache(QueueManager.getInstance().getContext()
+            FileHelper.getInstance().returnOrUpdateCache(QueueManager.getInstance().getContext()
                     , new JSONObject(jsonString), super.getUrl());
         } catch (JSONException e) {
             e.printStackTrace();

@@ -4,6 +4,9 @@ package com.antoniotari.android.injection;
  * Created by antonio on 14/05/15.
  */
 
+import com.antoniotari.android.jedi.ATFontUtil;
+import com.antoniotari.android.jedi.ScreenDimension;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -20,6 +23,8 @@ import dagger.Provides;
 @Module (
         // Note: we can get rid of injects= when dagger 2.0 is released.
         injects = {
+                ATFontUtil.class,
+                ScreenDimension.class
         },
         includes = {
         },
@@ -41,5 +46,10 @@ public class JediModule {
     @Singleton @ForApplication
     Context provideApplicationContext() {
         return mContext;
+    }
+
+    @Singleton
+    ScreenDimension provideScreenDimension(@ForApplication Context context){
+        return new ScreenDimension(context);
     }
 }

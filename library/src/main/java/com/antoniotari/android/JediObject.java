@@ -2,7 +2,7 @@ package com.antoniotari.android;
 
 import com.google.gson.Gson;
 
-import com.antoniotari.android.jedi.FileUtil;
+import com.antoniotari.android.jedi.FileHelper;
 import com.antoniotari.android.jedi.JsonUtils;
 import com.antoniotari.android.jedi.Log;
 
@@ -49,8 +49,8 @@ public abstract class JediObject {
 
     public boolean saveToDisk(Context context,String filename){
         try {
-            FileUtil.getInstance().storeSerializable(context,filename+"class",this.getClass());
-            return FileUtil.getInstance().writeStringFile(context,filename,toJson().toString());
+            FileHelper.getInstance().storeSerializable(context,filename+"class",this.getClass());
+            return FileHelper.getInstance().writeStringFile(context,filename,toJson().toString());
         } catch (IOException e) {
             Log.error(e);
         }
@@ -59,8 +59,8 @@ public abstract class JediObject {
 
     public static <T> T readFromDisk(Context context,String filename){//},Class<T> classOfT){
         try {
-            Class<T> thClass=(Class<T>)FileUtil.getInstance().readSerializable(context,filename+"class");
-            return new Gson().fromJson(FileUtil.getInstance().readStringFile(context, filename), thClass);
+            Class<T> thClass=(Class<T>) FileHelper.getInstance().readSerializable(context,filename+"class");
+            return new Gson().fromJson(FileHelper.getInstance().readStringFile(context, filename), thClass);
         }catch (Exception e){}
         return null;
     }

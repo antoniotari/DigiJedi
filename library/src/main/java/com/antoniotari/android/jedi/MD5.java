@@ -152,16 +152,16 @@ public class MD5
 	public static final String MD5INT_FILENAME="md5Intstored";
 	public static void storeMD5s(Context context){
 		if(_md5Cache!=null){
-			FileUtil.getInstance().storeSerializable(context, MD5_FILENAME, _md5Cache);
+			FileHelper.getInstance().storeSerializable(context, MD5_FILENAME, _md5Cache);
 		}
 		
 		if(_md5IntCache!=null){
-			FileUtil.getInstance().storeSerializable(context, MD5INT_FILENAME, _md5IntCache);
+			FileHelper.getInstance().storeSerializable(context, MD5INT_FILENAME, _md5IntCache);
 		}
 	}
 
     private static boolean checkExists(){
-        return FileUtil.fileExistsAndCanRead(MD5_FILENAME);
+        return FileHelper.fileExistsAndCanRead(MD5_FILENAME);
         //File f = new File(MD5_FILENAME);
         //return(f.exists() && !f.isDirectory() && f.canRead());
     }
@@ -169,7 +169,7 @@ public class MD5
 	public static HashMap<String,String> readMD5s(Context context){
 		try{
             if(checkExists()) {
-                _md5Cache = (HashMap<String, String>) FileUtil.getInstance().readSerializable(context, MD5_FILENAME);
+                _md5Cache = (HashMap<String, String>) FileHelper.getInstance().readSerializable(context, MD5_FILENAME);
                 if (_md5Cache == null) {
                     _md5Cache = new HashMap<String, String>();
                 }
@@ -184,7 +184,7 @@ public class MD5
 	public static HashMap<String,Integer> readMD5Ints(Context context){
 		try{
             if(checkExists()) {
-                _md5IntCache = (HashMap<String, Integer>) FileUtil.getInstance().readSerializable(context, MD5INT_FILENAME);
+                _md5IntCache = (HashMap<String, Integer>) FileHelper.getInstance().readSerializable(context, MD5INT_FILENAME);
                 if (_md5IntCache == null) {
                     _md5IntCache = new HashMap<String, Integer>();
                 }

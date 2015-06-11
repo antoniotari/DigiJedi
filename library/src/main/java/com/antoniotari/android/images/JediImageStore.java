@@ -1,6 +1,6 @@
 package com.antoniotari.android.images;
 
-import com.antoniotari.android.jedi.FileUtil;
+import com.antoniotari.android.jedi.FileHelper;
 import com.antoniotari.android.jedi.Log;
 
 import android.content.Context;
@@ -139,7 +139,7 @@ public class JediImageStore
 	//-----------------
 	private static String StorageDir(Context context)
 	{
-        return FileUtil.storageDir(context);
+        return FileHelper.storageDir(context);
 //		// To be safe, you should check that the SDCard is mounted
 //		// using Environment.getExternalStorageState() before doing this. 
 //		File mediaStorageDir = new File(Environment.getExternalStorageDirectory()

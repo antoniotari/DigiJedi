@@ -1,6 +1,5 @@
 package com.antoniotari.android.jedi;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -41,7 +40,7 @@ public class ATFontUtil {
     private static Typeface appTypeface = null;
     private static Typeface appTypefaceSec = null;
 
-    static class FontConfig {
+    private static class FontConfig {
         float fontSize;
         float fontSizeSecondary;
         String fontName;
@@ -101,8 +100,7 @@ public class ATFontUtil {
 //			cPref.commit();	
 //			ComplexPreferences.putBundle(c, KEY_FONTBUNDLE, b);
 
-            ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(c, "font_prefs", Context.MODE_PRIVATE);
-            ;
+            ComplexPreferences complexPreferences = new ComplexPreferences(c, "font_prefs", Context.MODE_PRIVATE);
             complexPreferences.putObject(KEY_FONTBUNDLE, new FontConfig(name, size, secname, secsize));
             complexPreferences.commit();
 
@@ -121,7 +119,7 @@ public class ATFontUtil {
     }
 
     public static FontConfig appFont(Context c) {
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(c, "font_prefs", Context.MODE_PRIVATE);
+        ComplexPreferences complexPreferences = new ComplexPreferences(c, "font_prefs", Context.MODE_PRIVATE);
         return complexPreferences.getObject(KEY_FONTBUNDLE, FontConfig.class);
     }
 
@@ -177,25 +175,6 @@ public class ATFontUtil {
         return appFontSecSize;
     }
 
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
-    // getting the font resize factor. factor 1 is 320x480
-    public static void GetFontResizeFactor_(Activity context) {
-        if (context == null) {
-            fontResizeFactor_(context, 1.0f);
-        }
-        ScreenDimension.setMetrics(context);
-
-        float widthFact = Float.valueOf((float) ScreenDimension.getScreenWidthPX() / 360.0f);
-        float heightFact = Float.valueOf((float) ScreenDimension.getScreenHeightPX() / 640.0f);
-        float dpiFact = Float.valueOf((float) ScreenDimension.getDensityDpi() / 160.0f);
-
-        float fact = (((widthFact / dpiFact + heightFact / dpiFact) / 2.0f)) - 0.0f;
-        fontResizeFactor_(context, fact < 0.66f ? 0.66f : fact);
-        //Log.d(tags.WIDGET,"resize factor="+fontResizeFactor()+"    fact:"+fact+" "+ScreenDimension.getScreenWidthPX()+" "+ScreenDimension.getScreenHeightPX()+" "+ScreenDimension.getDensityDpi());
-        //fontResizeFactor((((widthFact/dpiFact+heightFact/dpiFact)/2))-0.0f);
-        //if (fontResizeFactor()<1)fontResizeFactor(1.0f);
-    }
 
     //-------------------------------------------------------------------
 
