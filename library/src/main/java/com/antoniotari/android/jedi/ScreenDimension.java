@@ -1,7 +1,5 @@
 package com.antoniotari.android.jedi;
 
-import com.antoniotari.android.injection.ApplicationGraph;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
@@ -17,7 +15,7 @@ public class ScreenDimension {
     private DisplayMetrics _metrics;
 
     private ScreenDimension() {
-        ApplicationGraph.getObjectGraph().inject(this);
+        //ApplicationGraph.getObjectGraph().inject(this);
     }
 
     public ScreenDimension(Context context) {

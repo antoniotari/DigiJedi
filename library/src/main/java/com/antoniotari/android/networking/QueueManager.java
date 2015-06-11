@@ -58,12 +58,14 @@ public class QueueManager {
 
     // injecting the contest is a safe way to pass the context to a class
     public QueueManager(Context context) {
+        ApplicationGraph.getObjectGraph().injectQueueManager(this);
         mContext = context;
     }
 
     public static QueueManager getInstance() {
-        QueueManager qm = ApplicationGraph.getObjectGraph().get(QueueManager.class);
-        return qm;
+        //QueueManager qm = ApplicationGraph.getObjectGraph().getQueueManager();
+        //return DaggerJediComponent.builder().JediModule(new JediModule(null)).build().getQueueManager;
+        return null;
     }
 
     //---------------------------------------------------------

@@ -1,6 +1,5 @@
 package com.antoniotari.android.jedi;
 
-import com.antoniotari.android.injection.ApplicationGraph;
 import com.antoniotari.android.networking.HttpValues;
 
 import android.app.Activity;
@@ -54,7 +53,7 @@ public class JediUtil {
     //-----------------------------------------------------------------------------
     //-----------------the constructor should be placed in the application onCreate
     public JediUtil(Context context) {
-        ApplicationGraph.getObjectGraph().inject(this);
+        //ApplicationGraph.getObjectGraph().inject(this);
         packageName = context.getPackageName();
         //isReleaseSigned = !isDebuggable(context);
         instance = this;

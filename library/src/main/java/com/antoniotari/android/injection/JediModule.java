@@ -4,8 +4,8 @@ package com.antoniotari.android.injection;
  * Created by antonio on 14/05/15.
  */
 
-import com.antoniotari.android.jedi.ATFontUtil;
 import com.antoniotari.android.jedi.ScreenDimension;
+import com.antoniotari.android.networking.QueueManager;
 import com.squareup.okhttp.OkHttpClient;
 
 import android.app.Application;
@@ -19,19 +19,8 @@ import dagger.Provides;
 /**
  * Injection for Activities. You need to add the activity name here if you ever call ObjectGraph.inject(this) from an Activity or you will get an exception.
  * <p/>
- * Created by joshallen@digiflare.com on 14-12-01
  */
-@Module (
-        // Note: we can get rid of injects= when dagger 2.0 is released.
-        injects = {
-                ATFontUtil.class,
-                ScreenDimension.class
-        },
-        includes = {
-        },
-        complete = false,
-        library = true
-)
+@Module
 public class JediModule {
     private final Context mContext;
 
@@ -45,7 +34,7 @@ public class JediModule {
      */
     @Provides
     @Singleton @ForApplication
-    Context provideApplicationContext() {
+    Context provideContext() {
         return mContext;
     }
 
@@ -57,5 +46,10 @@ public class JediModule {
     @Provides @Singleton
     OkHttpClient provideOkHttpClient() {
         return new OkHttpClient();
+    }
+
+    @Provides @Singleton
+    QueueManager provideQueueManager(@ForApplication Context context) {
+        return new QueueManager(context);
     }
 }
