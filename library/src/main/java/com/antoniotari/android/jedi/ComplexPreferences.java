@@ -320,7 +320,7 @@ public class ComplexPreferences //extends br.com.kots.mob.complex.preferences.Co
 
     //-----------------------------------------------------------------------------
     public static Bundle getBundle(Context context, String key) {
-        Bundle returnBundle = null;
+        Bundle returnBundle;
 //		String str=FileUtil.getInstance().readStringFile(context, key);
 //		if(str==null){
 //			Log.error("getBundle,str is null");

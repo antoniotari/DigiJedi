@@ -38,15 +38,15 @@ import javax.security.auth.x500.X500Principal;
 
 public class JediUtil {
     private static JediUtil instance = null;
-    private static String packageName;
-    private static String dateFormat = "yyyy-MM-dd HH:mm:ss";
+    private String packageName;
+    private String dateFormat = "yyyy-MM-dd HH:mm:ss";
     public static final String NULL_VALUE = "__NULL__";
     public static final String EMPTY_VALUE = "__EMPTY__";
     public static String UTF8 = "UTF-8";
-    String appName = JediUtil.class.getSimpleName();
+    private String appName = JediUtil.class.getSimpleName();
     static boolean isDebug = true;
-    static boolean isReleaseSigned = false;
-    boolean sendDataToServer = false;
+    //static boolean isReleaseSigned = false;
+    private boolean sendDataToServer = false;
     private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
 
     @Inject
@@ -57,7 +57,7 @@ public class JediUtil {
     public JediUtil(Context context) {
         ApplicationGraph.getObjectGraph().inject(this);
         packageName = context.getPackageName();
-        isReleaseSigned = !isDebuggable(context);
+        //isReleaseSigned = !isDebuggable(context);
         instance = this;
 
         HttpValues.generateHttpValues(context);
@@ -82,14 +82,6 @@ public class JediUtil {
         MD5.storeMD5s(context);
     }
 
-//	//-----------------------------------------------------------------------------
-//	//used internally in this class
-//	private ATUtil()
-//	{
-//		packageName=ATUtil.class.getPackage().getName();
-//		isReleaseSigned=false;
-//		instance=this;
-//	}
 
     //-----------------------------------------------------------------------------
     public JediUtil(Context c, String dateFormat, String appNameVar, Boolean isDebugVar) {
@@ -126,7 +118,7 @@ public class JediUtil {
     //-----------------------------------------------------------------------------
     public JediUtil setDebug(Boolean isDebugVar) {
         if (isDebugVar != null) {
-            isDebug = isDebugVar;
+             isDebug = isDebugVar;
         }
         return this;
     }
@@ -149,15 +141,6 @@ public class JediUtil {
         return instance;
     }
 
-//	//-----------------------------------------------------------------------------
-//	//-----------------singleton get instance only used internally in this class
-//	public static ATUtil getInstance()
-//	{
-//		if(instance == null) 
-//			instance = new ATUtil();
-//		return instance;
-//	}
-
     //-----------------------------------------------------------------------------
     //-----------------
     public String getDateFormat() {
@@ -178,12 +161,6 @@ public class JediUtil {
 
     //-----------------------------------------------------------------------------
     //-----------------
-    public boolean getIsReleaseSigned() {
-        return isReleaseSigned;
-    }
-
-    //-----------------------------------------------------------------------------
-    //-----------------
 //	public String getPackageName()
 //	{
 //		return packageName;
@@ -191,7 +168,7 @@ public class JediUtil {
 
     //-----------------------------------------------------------------------------
     //-----------------
-    public static String getPackageName() {
+    public String getPackageName() {
         return packageName;
     }
 
@@ -206,7 +183,7 @@ public class JediUtil {
 
     //-----------------------------------------------------------------------------
     //-----------------
-    public static Date StringToDate(String dateS) {
+    public Date StringToDate(String dateS) {
         return StringToDate(dateS,
                 //ATUtil.getInstance(context).getDateFormat()
                 dateFormat);
@@ -338,7 +315,7 @@ public class JediUtil {
         return new Date();
     }
 
-    public static String today() {
+    public String today() {
         String dateS = new SimpleDateFormat(
                 //ATUtil.getInstance().getDateFormat(),
                 dateFormat,

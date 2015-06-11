@@ -48,7 +48,7 @@ public class JediModule {
         return mContext;
     }
 
-    @Singleton
+    @Provides @Singleton
     ScreenDimension provideScreenDimension(@ForApplication Context context){
         return new ScreenDimension(context);
     }

@@ -12,19 +12,31 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import static com.antoniotari.android.jedi.JediUtil.isDebug;
 
 public class Log {
-    static boolean SHOW_TAG_DB = true;
-    static boolean SHOW_TAG_GET = true;
 
-    final static int WARN = 1;
-    final static int INFO = 2;
-    final static int DEBUG = 3;
-    final static int VERB = 4;
+    enum LogLevel{
+        ERROR(0),
+        WARN(1),
+        INFO(2),
+        DEBUG(3),
+        VERB(4);
 
-    static int LOG_LEVEL;
+        int level;
 
-    public static final String tagPrefix = (JediUtil.getPackageName() == null ? Log.class.getCanonicalName() : JediUtil.getPackageName());
+        LogLevel(final int level) {
+            this.level=level;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+    }
+
+    static LogLevel LOG_LEVEL=LogLevel.VERB;
+
+    public static final String tagPrefix = "jedi.log.";//(JediUtil.getPackageName() == null ? Log.class.getCanonicalName() : JediUtil.getPackageName());
     public static final String tagDebug = tagPrefix + ".Log.debug";
     public static final String tagHi = tagPrefix + ".Log.hipriority";
     public static final String tagHttp = tagPrefix + ".Log.http";
@@ -36,9 +48,9 @@ public class Log {
     //-----------------------------------
     static {
         if ("google_sdk".equals(Build.PRODUCT) || "sdk".equals(Build.PRODUCT)) {
-            LOG_LEVEL = VERB;
+            LOG_LEVEL = LogLevel.VERB;
         } else {
-            LOG_LEVEL = INFO;
+            LOG_LEVEL = LogLevel.INFO;
         }
     }
 
@@ -183,31 +195,11 @@ public class Log {
         return stackTrace + "\t" + sb.toString();
     }
 
-    //---------------------------------------------------------------------------------------
-    //-----------------------------------
-    static boolean showTag(String tag) {
-        if (!isShowDebugMessages()) {
-            return false;
-        }
-
-		/*if(tag.equalsIgnoreCase(tags.TAG_DB))
-		{
-			return APP_DEBUG&&SHOW_TAG_DB;
-		}
-
-		if(tag.equalsIgnoreCase(tags.TAG_GET))
-		{
-			return APP_DEBUG&&SHOW_TAG_GET;
-		}*/
-
-        return isShowDebugMessages();
-    }
-
     /**
      * Error
      */
     public static void e(String tag, Object... string) {
-        if (showTag(tag)) {
+        if (isDebug) {
             android.util.Log.e(tag, buildString(string));
         }
     }
@@ -216,7 +208,7 @@ public class Log {
      * Warn
      */
     public static void w(String tag, Object... string) {
-        if (showTag(tag)) {
+        if (isDebug) {
             android.util.Log.w(tag, buildString(string));
         }
     }
@@ -225,8 +217,8 @@ public class Log {
      * Info
      */
     public static void i(String tag, Object... string) {
-        if (showTag(tag)) {
-            if (LOG_LEVEL >= INFO) {
+        if (isDebug) {
+            if (LOG_LEVEL.ordinal() >= LogLevel.INFO.ordinal()) {
                 android.util.Log.i(tag, buildString(string));
             }
         }
@@ -236,7 +228,7 @@ public class Log {
      * Debug
      */
     public static void d(String tag, Object... string) {
-        if (showTag(tag)) {
+        if (isDebug) {
             //if(LOG_LEVEL >= DEBUG)
             {
                 android.util.Log.d(tag, buildString(string));
@@ -248,7 +240,7 @@ public class Log {
      * Verbose
      */
     public static void v(String tag, Object... string) {
-        if (showTag(tag)) {
+        if (isDebug) {
             //if(LOG_LEVEL >= VERB)
             {
                 android.util.Log.v(tag, buildString(string));
@@ -275,10 +267,7 @@ public class Log {
     //---------------------------------------------------------------------------------------
     //-----------------------------------
     static boolean isShowDebugMessages() {
-        return !JediUtil.isReleaseSigned
-                //.getInstance().getIsReleaseSigned())
-                && JediUtil.isDebug;
-        //.getInstance().getIsDebug();
+        return true;
     }
 
     /**
