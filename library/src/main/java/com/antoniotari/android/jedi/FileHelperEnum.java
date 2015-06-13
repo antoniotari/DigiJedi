@@ -37,10 +37,13 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
+ *  * Created by anthony on 6/13/15.
  * @author Antonio Tari
  */
-public class FileHelper {
-    private volatile static FileHelper instance = null;
+public enum FileHelperEnum {
+    INSTANCE;
+
+    //private volatile static FileHelper instance = null;
     private static boolean useExternalStorage = false;
 
     public void setUseExternalStorage(boolean useExternal) {
@@ -51,23 +54,22 @@ public class FileHelper {
         return useExternalStorage;
     }
 
-    //------------------------------------------------------------------
-    //--------------
-    private FileHelper() {
+    public static FileHelperEnum getInstance(){
+        return FileHelperEnum.INSTANCE;
     }
 
     //------------------------------------------------------------------
     //--------------
-    public static FileHelper getInstance() {
-        if (null == instance) {
-            synchronized (FileHelper.class){
-                if (null == instance) {
-                    instance = new FileHelper();
-                }
-            }
-        }
-        return instance;
-    }
+//    public static FileHelper getInstance() {
+//        if (null == instance) {
+//            synchronized (FileHelper.class){
+//                if (null == instance) {
+//                    instance = new FileHelper();
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
     //-----------------------------------------------------------------------------
     //-----------------
@@ -233,8 +235,8 @@ public class FileHelper {
             return data;
 			/*byte[] buffer = new byte[1];
 			//int length;
-			while ((//length = 
-					fis.read(buffer)) != -1) 
+			while ((//length =
+					fis.read(buffer)) != -1)
 			{
 				fileContent.append(new String(buffer));
 			}
@@ -635,3 +637,4 @@ public class FileHelper {
         return SerialBundle.getInstance().deserializeBundle(storageDir(context) + fileName);
     }
 }
+
