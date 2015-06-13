@@ -122,6 +122,7 @@ public class JediUtil {
         if (isDebugVar != null) {
              isDebug = isDebugVar;
         }
+        com.antoniotari.android.jedi.Log.isDebug=isDebug;
         return this;
     }
 

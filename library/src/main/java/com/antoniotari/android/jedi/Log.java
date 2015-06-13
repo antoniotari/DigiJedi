@@ -12,9 +12,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
-import static com.antoniotari.android.jedi.JediUtil.isDebug;
 
-public class Log {
+public final class Log {
 
     enum LogLevel{
         ERROR(0),
@@ -35,6 +34,7 @@ public class Log {
     }
 
     static LogLevel LOG_LEVEL=LogLevel.VERB;
+    public static boolean isDebug = true;
 
     public static final String tagPrefix = "jedi.log.";//(JediUtil.getPackageName() == null ? Log.class.getCanonicalName() : JediUtil.getPackageName());
     public static final String tagDebug = tagPrefix + ".Log.debug";
@@ -60,6 +60,10 @@ public class Log {
         d(tagDebug, messages);
     }
 
+    public static void log(Object... messages){
+        debug(messages);
+    }
+
     //---------------------------------------------------------------------------------------
     //-----------------------------------
     public static void hi(Object... messages) {
@@ -75,7 +79,12 @@ public class Log {
     //---------------------------------------------------------------------------------------
     //-----------------------------------
     public static void error(Object... messages) {
-        d(tagError, messages);
+        e(tagError, messages);
+    }
+
+
+    public static void loge(Object... messages){
+        error(messages);
     }
 
     //---------------------------------------------------------------------------------------
