@@ -5,6 +5,7 @@ package com.antoniotari.android.injection;
  */
 
 import com.antoniotari.android.jedi.ATFontUtil;
+import com.antoniotari.android.jedi.JediUtil;
 import com.antoniotari.android.jedi.ScreenDimension;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -25,7 +26,8 @@ import dagger.Provides;
         // Note: we can get rid of injects= when dagger 2.0 is released.
         injects = {
                 ATFontUtil.class,
-                ScreenDimension.class
+                ScreenDimension.class,
+                JediUtil.class
         },
         includes = {
         },
@@ -57,5 +59,10 @@ public class JediModule {
     @Provides @Singleton
     OkHttpClient provideOkHttpClient() {
         return new OkHttpClient();
+    }
+
+    @Provides @Singleton
+    JediUtil provideJediUtil(@ForApplication Context context) {
+        return new JediUtil(context);
     }
 }

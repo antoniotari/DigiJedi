@@ -25,6 +25,10 @@ public class ScreenDimension {
         setMetrics(context);
     }
 
+    public static ScreenDimension getInstance(){
+        return ApplicationGraph.getObjectGraph().get(ScreenDimension.class);
+    }
+
     private void setMetrics(Context context) {
         _metrics = new DisplayMetrics();
         //activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);

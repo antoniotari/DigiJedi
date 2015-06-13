@@ -1,10 +1,12 @@
 package com.antoniotari.android.jedi;
 
 import com.antoniotari.android.injection.ApplicationGraph;
+import com.antoniotari.android.injection.JediModule;
 import com.antoniotari.android.networking.HttpValues;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
@@ -35,8 +37,10 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.security.auth.x500.X500Principal;
 
+import dagger.ObjectGraph;
+
 public class JediUtil {
-    private static JediUtil instance = null;
+    //private static JediUtil instance = null;
     private String packageName;
     private String dateFormat = "yyyy-MM-dd HH:mm:ss";
     public static final String NULL_VALUE = "__NULL__";
@@ -52,12 +56,11 @@ public class JediUtil {
     ScreenDimension mScreenDimension;
 
     //-----------------------------------------------------------------------------
-    //-----------------the constructor should be placed in the application onCreate
+    //-----------------the constructor is called by the injection module
     public JediUtil(Context context) {
         ApplicationGraph.getObjectGraph().inject(this);
         packageName = context.getPackageName();
-        //isReleaseSigned = !isDebuggable(context);
-        instance = this;
+        //instance = this;
 
         HttpValues.generateHttpValues(context);
 
@@ -88,7 +91,7 @@ public class JediUtil {
         dateFormat = dateFormat == null ? dateFormat : dateFormat;
         appName = appNameVar == null ? appName : appNameVar;
         isDebug = isDebugVar == null ? isDebug : isDebugVar;
-        instance = this;
+        //instance = this;
     }
 
     //---------------------------------------------
@@ -133,11 +136,22 @@ public class JediUtil {
 
     //-----------------------------------------------------------------------------
     //-----------------singleton get instance
-    public static JediUtil getInstance(Context context) {
-        if (instance == null) {
-            instance = new JediUtil(context);
-        }
-        return instance;
+//    public static JediUtil getInstance(Context context) {
+//        if (instance == null) {
+//            instance = new JediUtil(context);
+//        }
+//        return instance;
+//    }
+
+    public static JediUtil getInstance(){
+        return ApplicationGraph.getObjectGraph().get(JediUtil.class);
+    }
+
+    public static void init(Application application){
+        ObjectGraph graph = ObjectGraph.create(new JediModule(application));
+        //graph.inject(application);
+        graph.injectStatics();
+        ApplicationGraph.setObjectGraph(graph);
     }
 
     //-----------------------------------------------------------------------------
@@ -279,7 +293,7 @@ public class JediUtil {
     }
 
     public static void SimpleDialog(Context c, String message) {
-        SimpleDialog(c, message, JediUtil.getInstance(c).getAppName());
+        SimpleDialog(c, message, JediUtil.getInstance().getAppName());
     }
 
     //-----------------------------------------------------------------------------
