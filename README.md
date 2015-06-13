@@ -9,14 +9,13 @@ JediUtil.getInstance()
                 .setDebug(BuildConfig.DEBUG)
                 .useExternalStorage(false)
                 .setSendDataToServer(false);
-                ```
+```
 
 if you want to use it with Dagger add the module to the graph:
 ```java
 ObjectGraph graph = ObjectGraph.create(getModules().toArray());
 ApplicationGraph.setObjectGraph(graph);
 ```
-
 ```java
     protected List<Object> getModules() {
         return Arrays.asList(
