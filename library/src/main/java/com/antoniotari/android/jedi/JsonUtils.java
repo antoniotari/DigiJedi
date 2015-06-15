@@ -10,8 +10,32 @@ import java.util.ArrayList;
  * Class functions as a helper to provide easy
  */
 public class JsonUtils {
+    public static final String JSON_NULLSTRING="null";
 
     private JsonUtils() {}
+
+    /**
+     * checks is the value extracted from the json is null
+     * @param value
+     * @return
+     */
+    public static boolean isJsonValueNullOrEmpty(Object value){
+        return (value==null ||
+                ((value instanceof String) && ((String)value).equalsIgnoreCase(JSON_NULLSTRING)) ||
+                ((value instanceof String) && ((String)value).isEmpty())
+        );
+    }
+
+    /**
+     * checks is the value extracted from the json is null
+     * @param value
+     * @return
+     */
+    public static boolean isJsonValueNull(Object value) {
+        return (value==null ||
+                ((value instanceof String) && ((String)value).equalsIgnoreCase(JSON_NULLSTRING))
+        );
+    }
 
     /**
      * Get JSONObject from JSONObject by the given key, will return null if unsuccessful.

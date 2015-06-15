@@ -20,7 +20,6 @@ import dagger.Provides;
 /**
  * Injection for Activities. You need to add the activity name here if you ever call ObjectGraph.inject(this) from an Activity or you will get an exception.
  * <p/>
- * Created by joshallen@digiflare.com on 14-12-01
  */
 @Module (
         // Note: we can get rid of injects= when dagger 2.0 is released.
