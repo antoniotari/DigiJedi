@@ -1,33 +1,23 @@
 package com.antoniotari.android.networking;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.http.AndroidHttpClient;
-import android.os.Build;
-import android.text.TextUtils;
-
 import com.android.volley.Cache;
 import com.android.volley.Cache.Entry;
-import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HttpClientStack;
-import com.android.volley.toolbox.HttpStack;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
-import com.antoniotari.android.util.ATErrorLog;
-import com.antoniotari.android.util.image.VolleyBitmapCache;
-import com.mokalab.butler.util.Log;
-import com.mokalab.butler.volley.ATRequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
+import android.content.Context;
+import android.text.TextUtils;
+
 import java.io.UnsupportedEncodingException;
+
+//import com.antoniotari.android.util.ATErrorLog;
+//import com.antoniotari.android.util.image.VolleyBitmapCache;
+//import com.mokalab.butler.util.Log;
+//import com.mokalab.butler.volley.ATRequestQueue;
 
 public class ATHttp 
 {
@@ -130,7 +120,7 @@ public class ATHttp
 	public RequestQueue getRequestQueue(Context context) 
 	{
 		if (mRequestQueue == null) {
-            mRequestQueue = ATRequestQueue.newRequestQueue(context,null);
+            //mRequestQueue = ATRequestQueue.newRequestQueue(context,null);
         }
 		return mRequestQueue;
 	}
@@ -138,8 +128,8 @@ public class ATHttp
 	public ImageLoader getImageLoader(Context context)
 	{
 		getRequestQueue(context);
-		if (mImageLoader == null) 
-			mImageLoader = new ImageLoader(getRequestQueue(context) ,new VolleyBitmapCache());
+//		if (mImageLoader == null)
+//			mImageLoader = new ImageLoader(getRequestQueue(context) ,new VolleyBitmapCache());
 
 		return mImageLoader;
 	}

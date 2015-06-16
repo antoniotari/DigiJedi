@@ -106,7 +106,7 @@ dependencies {
     apt 'com.squareup.dagger:dagger-compiler:1.2.+'
 
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'org.apache.commons:commons-lang3:3.3.+'
     compile 'com.mcxiaoke.volley:library:1.0.15'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
