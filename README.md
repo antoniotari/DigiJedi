@@ -38,3 +38,22 @@ ApplicationGraph.setObjectGraph(graph);
         );
     }
 ```
+
+<b>Log</b><br>
+This special log class provides a big improvement over the standard android logger<br>
+it can log any type of object, doesn't have to be a string<br>
+it doesn't crash when the passed object is null<br>
+it doesn't require a TAG since it will print, before the log messages, the name of the class, the method and the line where the log is called<br>
+you can pass an exception or a throwable and it would print the whole stack trace<br>
+you can pass as many objects as you want to print<br><br>
+
+```java
+Log.debug(ob1,obj2,obj3);
+Log.log(obj1,"hello",12);
+Log.error(exc);
+```
+example of printed out message
+```
+ButlerHttpRequestBase.execute(97)	Requesting method *** 0 *** message1 *** message2 
+```
+
