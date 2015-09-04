@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public final class Log {
@@ -135,6 +136,19 @@ public final class Log {
         try {
             if (str == null) {
                 return (JediUtil.NULL_VALUE);
+            } else if (str instanceof Iterable){
+                StringBuilder sb = new StringBuilder("[");
+                Iterator<Object> flavoursIter = ((Iterable)str).iterator();
+                if (flavoursIter.hasNext()) {
+                    sb.append(checkString(flavoursIter.next()));
+                }
+                while (flavoursIter.hasNext()){
+                    sb.append(", ");
+                    sb.append(checkString(flavoursIter.next()));
+                }
+                sb.append("]");
+                return checkString(sb.toString());
+                //return checkString(ToStringBuilder.reflectionToString(str, ToStringStyle.MULTI_LINE_STYLE));
             } else if (str instanceof Throwable) {
                 //String thStr = ((Throwable)str).getLocalizedMessage();
                 return checkString(stackTraceToString((Throwable) str));
@@ -191,18 +205,12 @@ public final class Log {
             if (i < (sa.length - 1)) {
                 sb.append(separator);
             }
-
-            //Object theObj=sa[i];
-            //if(theObj==null)
-            //	theObj=ATUtil.NULL_VALUE;
-
-            //sb.append((theObj instanceof Exception)?((Exception)theObj).getLocalizedMessage():theObj.toString()
-            //		+ ((i==(sa.length-1))?"":"\n"));
         }
 
         String stackTrace = calcStackLine(Arrays.asList(Log.class.getName()));
         return stackTrace + "\t" + sb.toString();
     }
+
 
     /**
      * Error

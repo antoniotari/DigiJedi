@@ -11,18 +11,22 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.util.StateSet;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -344,6 +348,34 @@ public class JediImage {
             }
         }
         return retBitmap;
+    }
+
+    public static Bitmap overlay(Bitmap base, Bitmap over) {
+        Bitmap bmOverlay = Bitmap.createBitmap(base.getWidth(), base.getHeight(), base.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(base, new Matrix(), null);
+        canvas.drawBitmap(over, 0, 0, null);
+        return bmOverlay;
+    }
+
+    public static Bitmap overlay(Bitmap base, int overlayColor) {
+        Bitmap overlayBitmap = createColorBitmap(base.getWidth(), base.getHeight(), overlayColor);
+        return overlay(base, overlayBitmap);
+    }
+
+    public static StateListDrawable createStateDrawable(final Bitmap bitmap, Bitmap onPressBitmap) {
+        BitmapDrawable bitmapDrawable=new BitmapDrawable(bitmap);
+        StateListDrawable listDrawable = new StateListDrawable();
+        listDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(onPressBitmap));
+            /*listDrawable.addState(new int[]{android.R.attr.state_selected}, bitmapDrawable);
+            listDrawable.addState(new int[]{android.R.attr.state_activated}, bitmapDrawable);
+            listDrawable.addState(new int[]{android.R.attr.state_checked}, bitmapDrawable);*/
+        listDrawable.addState(StateSet.WILD_CARD, bitmapDrawable);
+        return listDrawable;
+    }
+
+    public static StateListDrawable createStateDrawable(final Bitmap bitmap, int onPressColor) {
+        return createStateDrawable(bitmap,JediImage.overlay(bitmap, onPressColor));
     }
 
     /**
