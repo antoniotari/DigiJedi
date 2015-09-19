@@ -166,6 +166,10 @@ public class JediUtil {
         ApplicationGraph.setObjectGraph(graph);
     }
 
+    public static void inject(Object toInject){
+        ApplicationGraph.getObjectGraph().inject(toInject);
+    }
+
     //-----------------------------------------------------------------------------
     //-----------------
     public String getDateFormat() {
