@@ -31,6 +31,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -151,6 +153,15 @@ public class JediUtil {
     public static void init(Application application){
         ObjectGraph graph = ObjectGraph.create(new JediModule(application));
         //graph.inject(application);
+        graph.injectStatics();
+        ApplicationGraph.setObjectGraph(graph);
+    }
+
+    public static void init(Application application, Object... daggerModules){
+        ArrayList<Object> modulesList=new ArrayList<Object>(Arrays.asList(daggerModules));
+        modulesList.add(new JediModule(application));
+        ObjectGraph graph = ObjectGraph.create(modulesList.toArray());
+        graph.inject(application);
         graph.injectStatics();
         ApplicationGraph.setObjectGraph(graph);
     }
