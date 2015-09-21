@@ -375,7 +375,7 @@ public class JediImage {
     }
 
     public static StateListDrawable createStateDrawable(final Bitmap bitmap, int onPressColor) {
-        return createStateDrawable(bitmap,JediImage.overlay(bitmap, onPressColor));
+        return createStateDrawable(bitmap,overlay(bitmap, onPressColor));
     }
 
     /**
