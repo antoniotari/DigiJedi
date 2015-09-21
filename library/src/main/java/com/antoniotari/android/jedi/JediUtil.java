@@ -4,6 +4,7 @@ import com.antoniotari.android.injection.ApplicationGraph;
 import com.antoniotari.android.injection.JediModule;
 import com.antoniotari.android.networking.HttpValues;
 
+import android.Manifest.permission;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -14,7 +15,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -151,14 +151,28 @@ public class JediUtil {
     }
 
     public static void init(Application application){
-        ObjectGraph graph = ObjectGraph.create(new JediModule(application));
-        //graph.inject(application);
-        graph.injectStatics();
-        ApplicationGraph.setObjectGraph(graph);
+        init(application,null);
     }
 
     public static void init(Application application, Object... daggerModules){
-        ArrayList<Object> modulesList=new ArrayList<Object>(Arrays.asList(daggerModules));
+        //check permissions
+        int hasPerm = application.getPackageManager().checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, application
+                .getPackageName());
+        if (hasPerm != PackageManager.PERMISSION_GRANTED) {
+            Log.error("remember to add permission.WRITE_EXTERNAL_STORAGE to your manifest if you want to use FileHelper and write on an external storage");
+        }
+        hasPerm = application.getPackageManager().checkPermission(permission.INTERNET,application.getPackageName());
+        if (hasPerm != PackageManager.PERMISSION_GRANTED) {
+            Log.error("remember to add permission.INTERNET to your manifest if you want to access the network");
+        }
+
+        ArrayList<Object> modulesList;
+        if(daggerModules!=null){
+            modulesList=new ArrayList<Object>(Arrays.asList(daggerModules));
+        } else {
+            modulesList=new ArrayList<Object>();
+        }
+
         modulesList.add(new JediModule(application));
         ObjectGraph graph = ObjectGraph.create(modulesList.toArray());
         graph.inject(application);
@@ -170,6 +184,10 @@ public class JediUtil {
         ApplicationGraph.getObjectGraph().inject(toInject);
     }
 
+
+    public static <T> T fromInject(Class<T> classOfT){
+        return ApplicationGraph.getObjectGraph().get(classOfT);
+    }
     //-----------------------------------------------------------------------------
     //-----------------
     public String getDateFormat() {
