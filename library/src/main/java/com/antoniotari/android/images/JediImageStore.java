@@ -16,129 +16,115 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+public class JediImageStore {
+    private static JediImageStore instance = null;
 
-public class JediImageStore
-{
-	private static JediImageStore instance=null;
+    private JediImageStore() {
 
-	private JediImageStore()
-	{
+    }
 
-	}
+    public static JediImageStore getInstance() {
+        if (instance == null) {
+            instance = new JediImageStore();
+        }
+        return instance;
+    }
 
-	public static JediImageStore getInstance()
-	{
-		if(instance==null)
-			instance=new JediImageStore();
-		return instance;
-	}
+    //-----------------------------------------------------------------------------
+    //-----------------
+    public synchronized void StoreImage(Context context, Bitmap image) {
+        File pictureFile = getOutputMediaFile(context);
+        saveFile(pictureFile, image);
+    }
 
-	//-----------------------------------------------------------------------------
-	//-----------------
-	public synchronized void StoreImage(Context context,Bitmap image) 
-	{
-		File pictureFile = getOutputMediaFile(context);
-		saveFile(pictureFile,image);
-	}
+    //-----------------------------------------------------------------------------
+    //-----------------
+    public synchronized void StoreImage(Context context, Bitmap image, String name) {
+        File pictureFile = getOutputMediaFile(context, name);
+        saveFile(pictureFile, image);
+    }
 
-	//-----------------------------------------------------------------------------
-	//-----------------
-	public synchronized void StoreImage(Context context,Bitmap image,String name) 
-	{
-		File pictureFile = getOutputMediaFile(context,name);
-		saveFile(pictureFile,image);
-	}
+    //-----------------------------------------------------------------------------
+    //-----------------
 
-	//-----------------------------------------------------------------------------
-	//-----------------
-	/**
-	 * 
-	 * @param context
-	 * @param image
-	 * @param name
-	 * @param maxSize		the max size in pixel of the image
-	 */
-	public void StoreImage(Context context,Bitmap image,String name,int maxSize) 
-	{
-		Bitmap img= JediImage.reduceBitmap(image, maxSize);
-		Log.debug("size before:" + image.getWidth() + " " + image.getHeight(), "size after:" + img.getWidth() + " " + img.getHeight());
-		StoreImage(context, img,name);
-	}
+    /**
+     * @param maxSize the max size in pixel of the image
+     */
+    public void StoreImage(Context context, Bitmap image, String name, int maxSize) {
+        Bitmap img = JediImage.reduceBitmap(image, maxSize);
+        Log.debug("size before:" + image.getWidth() + " " + image.getHeight(), "size after:" + img.getWidth() + " " + img.getHeight());
+        StoreImage(context, img, name);
+    }
 
-	//-----------------------------------------------------------------------------
-	//-----------------
-	public static Bitmap LoadImage(Context context,String name)
-	{
-		try{
-            String storageDir=StorageDir(context);
-            if(storageDir==null) {
+    //-----------------------------------------------------------------------------
+    //-----------------
+    public static Bitmap LoadImage(Context context, String name) {
+        try {
+            String storageDir = StorageDir(context);
+            if (storageDir == null) {
                 return null;
             }
 
-            String filePath=storageDir+name+".jpg";
+            String filePath = storageDir + name + ".jpg";
 
-            if(!(new File(filePath).isFile())){
+            if (!(new File(filePath).isFile())) {
                 return null;
             }
 
-			Bitmap selectedImage =  BitmapFactory.decodeFile(filePath);
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			selectedImage.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            selectedImage.compress(Bitmap.CompressFormat.JPEG, 90, stream);
             stream.close();
-			return selectedImage;
-		}
-		catch(Exception d){
-			return null;
-		}
-	}
+            return selectedImage;
+        } catch (Exception d) {
+            return null;
+        }
+    }
 
-	//-----------------------------------------------------------------------------
-	//-----------------
-	private static void saveFile(File pictureFile,Bitmap image)
-	{
-		if (pictureFile == null || image==null) 
-		{
-			//Log.d(tags.TAG_DEBUG,"Error creating media file, check storage permissions: ");// e.getMessage());
-			return;
-		} 
-		try {
-			FileOutputStream fos = new FileOutputStream(pictureFile);
-			image.compress(Bitmap.CompressFormat.PNG, 90, fos);
-			fos.close();
-		} catch (FileNotFoundException e) {
-			//Log.d(tags.TAG_DEBUG, "File not found: " + e.getMessage());
-		} catch (IOException e) {
-			//Log.d(tags.TAG_DEBUG, "Error accessing file: " + e.getMessage());
-		} catch (Exception e){}
-	}
+    //-----------------------------------------------------------------------------
+    //-----------------
+    private static void saveFile(File pictureFile, Bitmap image) {
+        if (pictureFile == null || image == null) {
+            //Log.d(tags.TAG_DEBUG,"Error creating media file, check storage permissions: ");// e.getMessage());
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            //Log.d(tags.TAG_DEBUG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            //Log.d(tags.TAG_DEBUG, "Error accessing file: " + e.getMessage());
+        } catch (Exception e) {
+        }
+    }
 
+    //-----------------------------------------------------------------------------
+    //----------------- Create a File for saving an image or video
+    private static File getOutputMediaFile(Context context) {
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm", Locale.getDefault()).format(new Date());
+        String mImageName = "MI_" + timeStamp;
+        return getOutputMediaFile(context, mImageName);
+    }
 
-	//-----------------------------------------------------------------------------
-	//----------------- Create a File for saving an image or video 
-	private static File getOutputMediaFile(Context context)
-	{
-		// Create a media file name
-		String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm",Locale.getDefault()).format(new Date());
-		String mImageName="MI_"+ timeStamp;
-		return getOutputMediaFile(context,mImageName);
-	} 
+    //-----------------------------------------------------------------------------
+    //----------------- Create a File for saving an image or video
+    public static File getOutputMediaFile(Context context, String mImageName) {
+        String dir = StorageDir(context);
+        if (dir == null) {
+            return null;
+        }
+        // Create a media file name
+        File mediaFile;
+        mediaFile = new File(dir + mImageName + ".jpg");
+        return mediaFile;
+    }
 
-	//-----------------------------------------------------------------------------
-	//----------------- Create a File for saving an image or video 
-	public static File getOutputMediaFile(Context context,String mImageName)
-	{
-		String dir=StorageDir(context);
-		if(dir==null)return null;
-		// Create a media file name
-		File mediaFile;
-		mediaFile = new File(dir + mImageName+".jpg");  
-		return mediaFile;
-	} 
-
-	//-----------------------------------------------------------------------------
-	//-----------------
-	private static String StorageDir(Context context)
-	{
+    //-----------------------------------------------------------------------------
+    //-----------------
+    private static String StorageDir(Context context) {
         return FileHelper.storageDir(context);
 //		// To be safe, you should check that the SDCard is mounted
 //		// using Environment.getExternalStorageState() before doing this. 
@@ -159,5 +145,5 @@ public class JediImageStore
 //		} 
 //
 //		return mediaStorageDir.getPath() + File.separator;
-	}
+    }
 }
